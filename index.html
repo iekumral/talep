@@ -6,7 +6,7 @@
 <title>Nadir Kimya · Talep Merkezi</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js" onerror="var s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js';document.head.appendChild(s)"></script>
 <style>
 :root{
   --bg:#EEF2F2; --panel:#FFFFFF; --ink:#22333A; --muted:#68787E;
@@ -359,10 +359,14 @@ function askDelete(id){
 /* ───────── grafikler ───────── */
 let charts={},chartsDirty=true;
 const PALETTE=['#E0705C','#38484D','#4A7FA5','#C08A22','#2E8B6E','#8C989C','#A9705C','#5C7F84'];
-Chart.defaults.font.family="'Space Grotesk',sans-serif";
-Chart.defaults.color='#68787E';
 
 function buildCharts(){
+  if(typeof Chart==='undefined'){
+    document.querySelectorAll('.ch-wrap').forEach(w=>w.innerHTML='<p style="color:var(--muted);font-size:12.5px;padding-top:24px;text-align:center">Grafik kütüphanesi yüklenemedi.<br>Bağlantını ve varsa reklam engelleyiciyi kontrol edip sayfayı yenile — kayıtların etkilenmez.</p>');
+    return;
+  }
+  Chart.defaults.font.family="'Space Grotesk',sans-serif";
+  Chart.defaults.color='#68787E';
   if(!chartsDirty)return;chartsDirty=false;
   Object.values(charts).forEach(c=>c.destroy());charts={};
 
